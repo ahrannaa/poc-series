@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  seriesId  Int
+  review    String
+  createdAt DateTime @default(now()) @db.Date
+  series    series   @relation(fields: [seriesId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users     users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model series {
+  id          Int      @id @default(autoincrement())
+  nameSeries  String   @unique
+  description String
+  genre       String
+  streaming   String
+  createdAt   DateTime @default(now()) @db.Date
+  review      review[]
+}
+
+model users {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(50)
+  email     String   @unique
+  createdAt DateTime @default(now()) @db.Date
+  review    review[]
+}
