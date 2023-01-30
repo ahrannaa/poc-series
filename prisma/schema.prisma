@@ -9,12 +9,10 @@ datasource db {
 
 model review {
   id        Int      @id @default(autoincrement())
-  userId    Int
-  seriesId  Int
+  userId    String
+  seriesId  String
   review    String
   createdAt DateTime @default(now()) @db.Date
-  series    series   @relation(fields: [seriesId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users     users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model series {
@@ -24,7 +22,6 @@ model series {
   genre       String
   streaming   String
   createdAt   DateTime @default(now()) @db.Date
-  review      review[]
 }
 
 model users {
@@ -32,5 +29,4 @@ model users {
   name      String   @db.VarChar(50)
   email     String   @unique
   createdAt DateTime @default(now()) @db.Date
-  review    review[]
 }
